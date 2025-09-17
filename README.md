@@ -115,14 +115,7 @@ You can deploy your bot to Pipecat Cloud. For guidance, follow the steps outlini
 - **Browser permissions**: Make sure to allow microphone access when prompted by your browser.
 - **Connection issues**: If the WebRTC connection fails, first try a different browser. If that fails, make sure you don't have a VPN or firewall rules blocking traffic. WebRTC uses UDP to communicate.
 - **Audio issues**: Check that your microphone and speakers are working and not muted.
- - **Direct Realtime (dev server secret)**: The `#/realtime-direct` page mints an ephemeral client secret via the Vite dev server at `/api/openai/realtime/client_secret`. Set `OPENAI_API_KEY` in `server/.env` or the client dev environment when starting Vite, e.g.:
-
-   ```bash
-   # In the client folder
-   OPENAI_API_KEY=sk-... npm run dev
-   ```
-
-   The secret endpoint is only for local development. Do not deploy your API key with the client.
+ - **Direct Realtime (dev server secret)**: The `#/realtime-direct` page mints an ephemeral client secret via the Vite dev server at `/api/openai/realtime/client_secret`. The dev server automatically reads `OPENAI_API_KEY` from `server/.env`. Optionally, you can set `OPENAI_API_KEY` in the client dev environment if you prefer. The secret endpoint is only for local development. Do not deploy your API key with the client.
  - **Browser WebSocket page**: The `#/realtime-ws` page also uses the same ephemeral secret endpoint to authenticate the WebSocket connection.
 
 ## Next Steps

@@ -5,6 +5,7 @@ import OpenAIRealtimePage from './pages/OpenAIRealtime';
 import OpenAIRealtimeAdvancedPage from './pages/OpenAIRealtimeAdvanced';
 import OpenAIRealtimeDirectPage from './pages/OpenAIRealtimeDirect';
 import OpenAIRealtimeWebSocketPage from './pages/OpenAIRealtimeWebSocket';
+import VoiceAgentsQuickstartPage from './pages/VoiceAgentsQuickstart';
 
 //@ts-ignore - fontsource-variable/geist is not typed
 import '@fontsource-variable/geist';
@@ -26,6 +27,7 @@ function Router() {
     hash.startsWith('#/realtime-advanced') ? 'realtime-advanced' :
     hash.startsWith('#/realtime-direct') ? 'realtime-direct' :
     hash.startsWith('#/realtime-ws') ? 'realtime-ws' :
+    hash.startsWith('#/voice-agents-quickstart') ? 'voice-agents-quickstart' :
     hash.startsWith('#/realtime') ? 'realtime' : 'home'
   ), [hash]);
 
@@ -41,6 +43,9 @@ function Router() {
   if (route === 'realtime-ws') {
     return <OpenAIRealtimeWebSocketPage />;
   }
+  if (route === 'voice-agents-quickstart') {
+    return <VoiceAgentsQuickstartPage />;
+  }
 
   return (
     <ThemeProvider>
@@ -52,6 +57,7 @@ function Router() {
           <a href="#/realtime-advanced">Go to Realtime Advanced demo →</a>
           <a href="#/realtime-direct">Go to OpenAI Realtime Direct (no Pipecat) →</a>
           <a href="#/realtime-ws">Go to OpenAI Realtime WebSocket (browser) →</a>
+          <a href="#/voice-agents-quickstart">Go to Voice Agents Quickstart →</a>
           <ConsoleTemplate
             transportType="smallwebrtc"
             connectParams={{

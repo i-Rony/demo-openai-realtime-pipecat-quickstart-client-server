@@ -33,19 +33,20 @@ export default defineConfig({
               });
 
               const sessionConfig = body || '{}';
-              // Try env var first; if missing, try reading server/.env
-              let apiKey = process.env.OPENAI_API_KEY;
-              if (!apiKey) {
-                try {
-                  const envPath = path.resolve(server.config.root || process.cwd(), '..', 'server', '.env');
-                  if (fs.existsSync(envPath)) {
-                    const text = fs.readFileSync(envPath, 'utf8');
-                    for (const line of text.split(/\r?\n/)) {
-                      const m = line.match(/^OPENAI_API_KEY\s*=\s*(.*)\s*$/);
-                      if (m) { apiKey = m[1].replace(/^['\"]|['\"]$/g, ''); break; }
-                    }
+              // Prefer server/.env; fallback to client env
+              let apiKey = undefined;
+              try {
+                const envPath = path.resolve(server.config.root || process.cwd(), '..', 'server', '.env');
+                if (fs.existsSync(envPath)) {
+                  const text = fs.readFileSync(envPath, 'utf8');
+                  for (const line of text.split(/\r?\n/)) {
+                    const m = line.match(/^OPENAI_API_KEY\s*=\s*(.*)\s*$/);
+                    if (m) { apiKey = m[1].replace(/^['\"]|['\"]$/g, ''); break; }
                   }
-                } catch {}
+                }
+              } catch {}
+              if (!apiKey) {
+                apiKey = process.env.OPENAI_API_KEY;
               }
               if (!apiKey) {
                 res.statusCode = 500;
