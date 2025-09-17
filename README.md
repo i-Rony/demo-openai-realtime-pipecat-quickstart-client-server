@@ -16,7 +16,9 @@ This is the recommended architecture for web applications that need custom inter
 - Python 3.10+
 - [uv](https://docs.astral.sh/uv/getting-started/installation/) package manager installed
 - `npm` installed
-- AI Service API keys for: [Deepgram](https://console.deepgram.com/signup), [OpenAI](https://auth.openai.com/create-account), and [Cartesia](https://play.cartesia.ai/sign-up)
+- AI Service API keys:
+  - For default pipeline: [Deepgram](https://console.deepgram.com/signup), [OpenAI](https://auth.openai.com/create-account), and [Cartesia](https://play.cartesia.ai/sign-up)
+  - For OpenAI Realtime Beta S2S page: only [OpenAI](https://auth.openai.com/create-account) is required
 
 ## Setup
 
@@ -58,7 +60,14 @@ cd pipecat-quickstart-client-server
 3. Run your server bot
 
    ```bash
-   uv run bot.py
+   # classic pipeline (Deepgram + OpenAI + Cartesia)
+   PIPELINE_MODE=classic uv run bot.py
+
+   # OpenAI Realtime Beta basic (integrated S2S)
+   PIPELINE_MODE=realtime-basic uv run bot.py
+
+   # OpenAI Realtime Beta advanced (tools + transcripts + context)
+   PIPELINE_MODE=realtime-advanced uv run bot.py
    ```
 
    > 💡 First run note: The initial startup may take ~15 seconds as Pipecat downloads required models, like the Silero VAD model.
@@ -87,7 +96,11 @@ cd pipecat-quickstart-client-server
 
 ### Connect and test
 
-**Open http://localhost:5173 in your browser** and click `Connect` to start talking to your bot.
+**Open http://localhost:5173 in your browser**
+
+- Default console: click `Connect` to start talking
+- OpenAI Realtime Beta (basic): click "Go to OpenAI Realtime Beta demo →" or `#/realtime`
+- OpenAI Realtime Beta (advanced): click "Go to Realtime Advanced demo →" or `#/realtime-advanced`
 
 > 💡 **Tip**: Check your server terminal for debug logs showing Pipecat's internal workings.
 
@@ -107,3 +120,12 @@ You can deploy your bot to Pipecat Cloud. For guidance, follow the steps outlini
 - **Learn about the voice-ui-kit**: Explore [voice-ui-kit](https://github.com/pipecat-ai/voice-ui-kit) to simplify your front end development
 - **Advanced examples**: Check out [pipecat-examples](https://github.com/pipecat-ai/pipecat-examples) for more complex client/server applications
 - **Join Discord**: Connect with other developers on [Discord](https://discord.gg/pipecat)
+
+### OpenAI Realtime Beta details
+
+The server supports the OpenAI Realtime Beta Speech-to-Speech service using `OpenAIRealtimeBetaLLMService` with two modes:
+
+- Basic: end-to-end speech with turn detection
+- Advanced: function calling, transcripts and context aggregation
+
+See the Pipecat docs for configuration options and advanced usage: [OpenAI Realtime Beta service docs](https://docs.pipecat.ai/server/services/s2s/openai).
