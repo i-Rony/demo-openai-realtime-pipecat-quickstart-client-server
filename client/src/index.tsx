@@ -3,6 +3,8 @@ import { StrictMode, useMemo, useSyncExternalStore } from 'react';
 import { createRoot } from 'react-dom/client';
 import OpenAIRealtimePage from './pages/OpenAIRealtime';
 import OpenAIRealtimeAdvancedPage from './pages/OpenAIRealtimeAdvanced';
+import OpenAIRealtimeDirectPage from './pages/OpenAIRealtimeDirect';
+import OpenAIRealtimeWebSocketPage from './pages/OpenAIRealtimeWebSocket';
 
 //@ts-ignore - fontsource-variable/geist is not typed
 import '@fontsource-variable/geist';
@@ -22,6 +24,8 @@ function Router() {
   const hash = useHash();
   const route = useMemo(() => (
     hash.startsWith('#/realtime-advanced') ? 'realtime-advanced' :
+    hash.startsWith('#/realtime-direct') ? 'realtime-direct' :
+    hash.startsWith('#/realtime-ws') ? 'realtime-ws' :
     hash.startsWith('#/realtime') ? 'realtime' : 'home'
   ), [hash]);
 
@@ -30,6 +34,12 @@ function Router() {
   }
   if (route === 'realtime-advanced') {
     return <OpenAIRealtimeAdvancedPage />;
+  }
+  if (route === 'realtime-direct') {
+    return <OpenAIRealtimeDirectPage />;
+  }
+  if (route === 'realtime-ws') {
+    return <OpenAIRealtimeWebSocketPage />;
   }
 
   return (
@@ -40,6 +50,8 @@ function Router() {
           <p>Default console demo. Try the OpenAI Realtime page for S2S.</p>
           <a href="#/realtime">Go to OpenAI Realtime Beta demo →</a>
           <a href="#/realtime-advanced">Go to Realtime Advanced demo →</a>
+          <a href="#/realtime-direct">Go to OpenAI Realtime Direct (no Pipecat) →</a>
+          <a href="#/realtime-ws">Go to OpenAI Realtime WebSocket (browser) →</a>
           <ConsoleTemplate
             transportType="smallwebrtc"
             connectParams={{

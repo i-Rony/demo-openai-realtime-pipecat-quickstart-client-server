@@ -101,6 +101,8 @@ cd pipecat-quickstart-client-server
 - Default console: click `Connect` to start talking
 - OpenAI Realtime Beta (basic): click "Go to OpenAI Realtime Beta demo →" or `#/realtime`
 - OpenAI Realtime Beta (advanced): click "Go to Realtime Advanced demo →" or `#/realtime-advanced`
+ - OpenAI Realtime Direct (no Pipecat): click "Go to OpenAI Realtime Direct (no Pipecat) →" or `#/realtime-direct`
+ - OpenAI Realtime WebSocket (browser): click "Go to OpenAI Realtime WebSocket (browser) →" or `#/realtime-ws`
 
 > 💡 **Tip**: Check your server terminal for debug logs showing Pipecat's internal workings.
 
@@ -113,6 +115,15 @@ You can deploy your bot to Pipecat Cloud. For guidance, follow the steps outlini
 - **Browser permissions**: Make sure to allow microphone access when prompted by your browser.
 - **Connection issues**: If the WebRTC connection fails, first try a different browser. If that fails, make sure you don't have a VPN or firewall rules blocking traffic. WebRTC uses UDP to communicate.
 - **Audio issues**: Check that your microphone and speakers are working and not muted.
+ - **Direct Realtime (dev server secret)**: The `#/realtime-direct` page mints an ephemeral client secret via the Vite dev server at `/api/openai/realtime/client_secret`. Set `OPENAI_API_KEY` in `server/.env` or the client dev environment when starting Vite, e.g.:
+
+   ```bash
+   # In the client folder
+   OPENAI_API_KEY=sk-... npm run dev
+   ```
+
+   The secret endpoint is only for local development. Do not deploy your API key with the client.
+ - **Browser WebSocket page**: The `#/realtime-ws` page also uses the same ephemeral secret endpoint to authenticate the WebSocket connection.
 
 ## Next Steps
 
@@ -120,6 +131,27 @@ You can deploy your bot to Pipecat Cloud. For guidance, follow the steps outlini
 - **Learn about the voice-ui-kit**: Explore [voice-ui-kit](https://github.com/pipecat-ai/voice-ui-kit) to simplify your front end development
 - **Advanced examples**: Check out [pipecat-examples](https://github.com/pipecat-ai/pipecat-examples) for more complex client/server applications
 - **Join Discord**: Connect with other developers on [Discord](https://discord.gg/pipecat)
+
+### OpenAI Realtime WebSocket demo (server-to-server)
+
+This repo includes a minimal Python WebSocket example that connects directly to OpenAI Realtime without Pipecat.
+
+Run it with your OpenAI key:
+
+```bash
+cd server
+uv sync
+OPENAI_API_KEY=sk-... uv run realtime_ws_demo.py
+```
+
+It will:
+
+- Open a WebSocket to `wss://api.openai.com/v1/realtime?model=gpt-realtime`
+- Send `session.update` to configure the session
+- Create a user message and request a response
+- Print the assistant text as it streams (`response.output_text.delta/done`)
+
+To extend this to audio, follow the Realtime conversations guide to send/receive base64-encoded audio events.
 
 ### OpenAI Realtime Beta details
 
